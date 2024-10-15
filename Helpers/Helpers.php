@@ -9,6 +9,7 @@ use Addons\Employee\Models\WorkTable;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 if ( !function_exists( 'employee_unid' ) ) {
@@ -76,21 +77,18 @@ if ( !function_exists( 'addonVersion' ) ) {
         $client = new Client();
 
         try {
-            $response = $client->get( 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest', [
-                'headers' => [
-                    'Authorization' => "Bearer {$token}",
-                    'Accept'        => 'application/vnd.github.v3+json',
-                ],
-            ] );
+            $url = 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest';
+
+            // Make the request to the API
+            $response = Http::withHeaders( ['Accept' => 'application/vnd.github.v3+json'] )->get( $url );
 
             // Check if the request was successful
-            if ( $response->getStatusCode() === 200 ) {
+            if ( $response->successful() ) {
                 // Decode the response
-                $latestRelease = json_decode( $response->getBody(), true );
+                $latestRelease = $response->json();
 
                 // Extract the latest version and download URL
                 $latestVersion = $latestRelease['tag_name'] ?? '';
-                $downloadUrl   = $latestRelease['zipball_url'] ?? '';
 
                 // Compare versions and update if needed
                 if ( version_compare( $latestVersion, $currentVersion, '>' ) ) {
