@@ -3,6 +3,7 @@
 namespace Addons\Employee\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -16,16 +17,15 @@ class EmployeeAddonUpdateController extends Controller {
 
         // Safely read the current version
         $currentVersion = json_decode( File::get( $versionPath ), true )['version'] ?? '0.0.0';
-
-        $url = 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest';
-
-        // Make the request to the API
-        $response = Http::withHeaders( ['Accept' => 'application/vnd.github.v3+json'] )->get( $url );
+        $client         = new Client();
+        $response       = $client->get( 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest', [
+            'verify' => false,
+        ] );
 
         // Check if the response is successful
-        if ( $response->successful() ) {
+        if ( $response->getStatusCode() === 200 ) {
             // Decode the JSON response
-            $data = $response->json();
+            $data = json_decode( $response->getBody(), true );
 
             // Get the version and zipball_url from the response
             $latestVersion = $data['tag_name'] ?? '';
