@@ -248,7 +248,7 @@ Route::middleware( ['web'] )->group( function () {
         } );
 
         //----Addons Route
-        Route::get( '/addon/update', [EmployeeAddonUpdateController::class, 'checkForUpdates'] )->name( 'employee.addon.update' );
+        Route::get( '/addon/update', [EmployeeAddonUpdateController::class, 'downloadAndUpdate'] )->name( 'employee.addon.update' );
 
     } );
 
