@@ -50,7 +50,6 @@
                                         <th>#</th>
                                         <th class="text-danger">Department Name</th>
                                         <th>Status</th>
-                                        <th>Deactive</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -60,10 +59,6 @@
                                         <tr>
                                             <td width="3%">{{ $key + 1 }}</td>
                                             <td>{{ $department->name }}</td>
-                                            <td width="15%">
-                                                <span
-                                                    class="badge rounded-pill @if ($department->status == 'active') text-bg-success @else text-bg-danger @endif ">{{ $department->status }}</span>
-                                            </td>
                                             <td width="15%">
                                                 <span
                                                     class="badge rounded-pill @if ($department->status == 'active') text-bg-success @else text-bg-danger @endif ">{{ $department->status }}</span>
