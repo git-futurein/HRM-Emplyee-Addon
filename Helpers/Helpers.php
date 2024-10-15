@@ -92,8 +92,8 @@ if ( !function_exists( 'addonVersion' ) ) {
                 // Compare versions and update if needed
                 if ( version_compare( $latestVersion, $currentVersion, '>' ) ) {
                     return "
-                        <div style='padding: 15px; border: 1px solid #f0ad4e; background-color: #fcf8e3; border-radius: 5px; margin-bottom: 15px;'>
-                            <strong style='color: #f0ad4e;'>Update Available!</strong><br><br>
+                        <div style='padding: 15px; border: 1px solid #f0ad4e; background-color: #fcf8e3; border-radius: 5px; margin-bottom: 15px; font-size: 12px;'>
+                            <h5 style='color: #f0ad4e;'>Update Available!</h5>
                             A new version <strong>'{$latestVersion}'</strong> of the Employee Addon is available.
                             Install it from <a href='" . route( 'employee.addon.update' ) . "' style='color: #d9534f; text-decoration: underline;'>here</a>.
                         </div>
