@@ -28,7 +28,7 @@ class EmployeeServiceProvider extends ServiceProvider {
             $this->loadViewsFrom( __DIR__ . '/Views/admin/work_table', 'WorkTable' );
             $this->loadViewsFrom( __DIR__ . '/Views', 'Notification' );
             $this->loadMigrationsFrom( __DIR__ . '/Migrations' );
-            $this->loadRoutesFrom( __DIR__ . '/routes/admin.php' );
+            $this->loadRoutesFrom( base_path( 'Addons/Employee/routes/admin.php' ) );
 
             $this->loadHelpers();
             // $this->checkForUpdates();

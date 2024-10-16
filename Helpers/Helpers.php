@@ -77,7 +77,10 @@ if ( !function_exists( 'addonVersion' ) ) {
 
         try {
             $response = $client->get( 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest', [
-                'verify' => false,
+                'headers' => [
+                    'Authorization' => "Bearer {$token}",
+                    'Accept'        => 'application/vnd.github.v3+json',
+                ],
             ] );
 
             // dd( json_decode( $response->getBody(), true ) );

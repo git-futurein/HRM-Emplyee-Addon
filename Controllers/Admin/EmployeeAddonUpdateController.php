@@ -17,9 +17,13 @@ class EmployeeAddonUpdateController extends Controller {
 
         // Safely read the current version
         $currentVersion = json_decode( File::get( $versionPath ), true )['version'] ?? '0.0.0';
+        $token          = env( 'GITHUB_TOKEN' ); // Use an environment variable for the token
         $client         = new Client();
         $response       = $client->get( 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest', [
-            'verify' => false,
+            'headers' => [
+                'Authorization' => "Bearer {$token}",
+                'Accept'        => 'application/vnd.github.v3+json',
+            ],
         ] );
 
         // Check if the response is successful
