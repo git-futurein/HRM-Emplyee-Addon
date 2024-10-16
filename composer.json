@@ -1,0 +1,17 @@
+{
+  "name": "hrm/employee-addon",
+  "description": "A employee addon for hrm",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Addons\\Employee\\": ""
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Addons\\Employee\\EmployeeServiceProvider"
+      ]
+    }
+  }
+}

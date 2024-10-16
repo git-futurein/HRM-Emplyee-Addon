@@ -9,7 +9,6 @@ use Addons\Employee\Models\WorkTable;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 if ( !function_exists( 'employee_unid' ) ) {
@@ -77,15 +76,18 @@ if ( !function_exists( 'addonVersion' ) ) {
         $client = new Client();
 
         try {
-            $url = 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest';
+            $response = $client->get( 'https://api.github.com/repos/git-futurein/HRM-Emplyee-Addon/releases/latest', [
+                'headers' => [
+                    'Authorization' => "Bearer {$token}",
+                    'Accept'        => 'application/vnd.github.v3+json',
+                ],
+            ] );
 
-            // Make the request to the API
-            $response = Http::withHeaders( ['Accept' => 'application/vnd.github.v3+json'] )->get( $url );
-
+            // dd( json_decode( $response->getBody(), true ) );
             // Check if the request was successful
-            if ( $response->successful() ) {
+            if ( $response->getStatusCode() === 200 ) {
                 // Decode the response
-                $latestRelease = $response->json();
+                $latestRelease = json_decode( $response->getBody(), true );
 
                 // Extract the latest version and download URL
                 $latestVersion = $latestRelease['tag_name'] ?? '';
@@ -93,8 +95,8 @@ if ( !function_exists( 'addonVersion' ) ) {
                 // Compare versions and update if needed
                 if ( version_compare( $latestVersion, $currentVersion, '>' ) ) {
                     return "
-                        <div style='padding: 15px; border: 1px solid #f0ad4e; background-color: #fcf8e3; border-radius: 5px; margin-bottom: 15px;'>
-                            <strong style='color: #f0ad4e;'>Update Available!</strong><br><br>
+                        <div style='padding: 15px; border: 1px solid #f0ad4e; background-color: #fcf8e3; border-radius: 5px; margin-bottom: 15px; font-size: 12px;'>
+                            <h5 style='color: #f0ad4e;'>Update Available!</h5>
                             A new version <strong>'{$latestVersion}'</strong> of the Employee Addon is available.
                             Install it from <a href='" . route( 'employee.addon.update' ) . "' style='color: #d9534f; text-decoration: underline;'>here</a>.
                         </div>
