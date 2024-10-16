@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Http;
 use ZipArchive;
 
 class EmployeeAddonUpdateController extends Controller {
@@ -38,16 +37,24 @@ class EmployeeAddonUpdateController extends Controller {
             // Compare versions and update if needed
             if ( version_compare( $latestVersion, $currentVersion, '>' ) ) {
                 // Make a request to download the ZIP file
-                $zipResponse = Http::withHeaders( ['git-futurein' => 'HRM-Emplyee-Addon'] )
-                    ->get( $zipballUrl, ['access_token' => env( 'GITHUB_TOKEN' )] );
+                $zipResponse = $client->get( $zipballUrl, [
+                    'headers' => [
+                        'Authorization' => "Bearer {$token}",
+                        // Removed Accept header
+                    ],
+                ] );
 
-                if ( $latestVersion ) {
-                    $zipContent  = $zipResponse->body();
+                if ( $zipResponse->getStatusCode() === 200 ) {
                     $zipFileName = "{$data['name']}.zip"; // or use $data['tag_name'] for versioned name
-                    $filePath    = public_path( $zipFileName );
+                    $filePath    = public_path( 'app/temp/' . $zipFileName );
+                    $directory   = dirname( $filePath );
+
+                    if ( !is_dir( $directory ) ) {
+                        mkdir( $directory, 0755, true );
+                    }
 
                     // Save the ZIP file to the public directory
-                    file_put_contents( $filePath, $zipContent );
+                    file_put_contents( $filePath, $zipResponse->getBody() );
 
                     $zip = new ZipArchive;
 
@@ -63,8 +70,11 @@ class EmployeeAddonUpdateController extends Controller {
                         // Clean up the temporary directory
                         $this->deleteDirectory( $extractPath );
 
+                        if ( File::exists( $filePath ) ) {
+                            File::delete( $filePath );
+                        }
+
                         $this->runAddonMigrations();
-                        Artisan::call( 'config:cache' );
 
                         return back()->with( 'success', 'Files imported successfully.' );
                     } else {
@@ -150,23 +160,24 @@ class EmployeeAddonUpdateController extends Controller {
 
     private function deleteDirectory( $dir ) {
         if ( !file_exists( $dir ) ) {
-            return true;
+            return true; // Directory does not exist, nothing to do
         }
 
         if ( !is_dir( $dir ) ) {
-            return unlink( $dir );
+            return unlink( $dir ); // It's a file, so delete it
         }
 
+        // Scan the directory for files and directories
         foreach ( scandir( $dir ) as $item ) {
             if ( $item == '.' || $item == '..' ) {
-                continue;
+                continue; // Skip the special entries
             }
 
-            if ( !$this->deleteDirectory( $dir . DIRECTORY_SEPARATOR . $item ) ) {
-                return false;
-            }
+            // Recursively delete the contents
+            $this->deleteDirectory( $dir . DIRECTORY_SEPARATOR . $item );
         }
 
+        // Finally, remove the now-empty directory
         return rmdir( $dir );
     }
 
