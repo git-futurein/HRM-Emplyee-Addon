@@ -76,7 +76,7 @@ class EmployeeAddonUpdateController extends Controller {
 
                         $this->runAddonMigrations();
 
-                        return back()->with( 'success', 'Files imported successfully.' );
+                        return back()->with( 'success', 'Employee Addon updated successfully.' );
                     } else {
                         return back()->with( 'error', 'Failed to open zip file.' );
                     }
