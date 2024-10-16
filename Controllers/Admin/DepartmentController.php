@@ -18,6 +18,8 @@ class DepartmentController extends Controller {
 
         $departments = Department::select( 'id', 'name', 'status' )->get();
 
+        return view( 'Department::index', compact( 'departments' ) );
+
         $view = 'Department::index';
         if ( !view()->exists( $view ) ) {
             return view( 'errors.404' );
