@@ -14,19 +14,19 @@ class EmployeeServiceProvider extends ServiceProvider {
             ->value( 'enabled' );
 
         if ( $enabled ) {
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/department', 'Department' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/designation', 'Designation' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/employee', 'Employee' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/id_type', 'IdType' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/job_category', 'JobCategory' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/job_type', 'JobType' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/leave_type', 'LeaveType' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/leave_table', 'LeaveTable' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/provident_fund', 'ProvidentFund' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/race', 'Race' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/relationship', 'Relationship' );
-            $this->loadViewsFrom( __DIR__ . '/Views/admin/work_table', 'WorkTable' );
-            $this->loadViewsFrom( __DIR__ . '/Views', 'Notification' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/department', 'Department' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/designation', 'Designation' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/employee', 'Employee' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/id_type', 'IdType' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/job_category', 'JobCategory' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/job_type', 'JobType' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/leave_type', 'LeaveType' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/leave_table', 'LeaveTable' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/provident_fund', 'ProvidentFund' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/race', 'Race' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/relationship', 'Relationship' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/work_table', 'WorkTable' );
+            $this->loadViewsFrom( __DIR__ . '/resources/Views', 'Notification' );
             $this->loadMigrationsFrom( __DIR__ . '/Migrations' );
             $this->loadRoutesFrom( base_path( 'Addons/Employee/routes/admin.php' ) );
 
