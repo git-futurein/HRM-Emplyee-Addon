@@ -2,16 +2,19 @@
 
 namespace Addons\Employee;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class EmployeeServiceProvider extends ServiceProvider {
 
     public function boot() {
 
-        $enabled = DB::table( 'addon_settings' )
-            ->where( 'name', 'employee' )
-            ->value( 'enabled' );
+        // $enabledDB = DB::table( 'addon_settings' )
+        //     ->where( 'name', 'employee' )
+        //     ->value( 'enabled' );
+
+        $this->mergeConfigFrom( __DIR__ . '/config/employee.php', 'employee' );
+
+        $enabled = config( 'employee.enabled' );
 
         if ( $enabled ) {
             $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/department', 'Department' );
