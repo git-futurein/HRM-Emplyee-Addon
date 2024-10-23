@@ -30,7 +30,7 @@ class EmployeeServiceProvider extends ServiceProvider {
             $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/relationship', 'Relationship' );
             $this->loadViewsFrom( __DIR__ . '/resources/Views/admin/work_table', 'WorkTable' );
             $this->loadViewsFrom( __DIR__ . '/resources/Views', 'Notification' );
-            $this->loadMigrationsFrom( __DIR__ . '/Migrations' );
+            $this->loadMigrationsFrom( __DIR__ . '/migrations' );
             $this->loadRoutesFrom( base_path( 'Addons/Employee/routes/admin.php' ) );
 
             $this->loadHelpers();
@@ -106,6 +106,37 @@ class EmployeeServiceProvider extends ServiceProvider {
         if ( file_exists( $helpers ) ) {
             require_once $helpers;
         }
+    }
+
+    public function getSidebarItems() {
+
+        $enabled = config( 'employee.enabled' );
+        if ( $enabled ) {
+            return [
+                'Employee'      => [
+                    ['name' => 'Employee Management', 'url' => route( 'employee.index' )],
+                    ['name' => 'Employee Import', 'url' => route( 'employee.import.form' )],
+                ],
+                'Configuration' => [
+                    ['name' => 'Department', 'url' => route( 'department.index' )],
+                    ['name' => 'Designation', 'url' => route( 'designation.index' )],
+                    ['name' => 'Job Type', 'url' => route( 'job.type.index' )],
+                    ['name' => 'Job Category', 'url' => route( 'job.category.index' )],
+                    ['name' => 'Leave Type', 'url' => route( 'leave.type.index' )],
+                    ['name' => 'Leave Table', 'url' => route( 'leave.table.index' )],
+                    ['name' => 'Work Table', 'url' => route( 'work.table.index' )],
+                    ['name' => 'Relationship', 'url' => route( 'relationship.index' )],
+                    ['name' => 'ID Type', 'url' => route( 'idType.index' )],
+                    ['name' => 'Race', 'url' => route( 'race.index' )],
+                    ['name' => 'CPF', 'url' => route( 'provident.fund.index' )],
+                ],
+
+            ];
+        }
+    }
+
+    public function getOrder() {
+        return 2; // Define the order for this provider
     }
 
     // private function checkForUpdates() {
