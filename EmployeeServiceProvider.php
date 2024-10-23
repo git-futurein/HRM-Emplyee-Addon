@@ -113,7 +113,7 @@ class EmployeeServiceProvider extends ServiceProvider {
         $enabled = config( 'employee.enabled' );
         if ( $enabled ) {
             return [
-                'Employee'      => [
+                'Employees'     => [
                     ['name' => 'Employee Management', 'url' => route( 'employee.index' )],
                     ['name' => 'Employee Import', 'url' => route( 'employee.import.form' )],
                 ],
